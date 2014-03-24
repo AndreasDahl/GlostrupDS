@@ -4,6 +4,7 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 import java.awt.image.BufferedImage;
+import java.io.Closeable;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Iterator;
@@ -14,21 +15,39 @@ import java.util.Iterator;
  */
 public class DicomLoader {
     public static BufferedImage[] loadDicom(String filename) throws IOException {
-        FileInputStream fin = new FileInputStream(filename);
-        String suffix = filename.substring(filename.lastIndexOf('.') + 1);
-        System.out.println("suf " + suffix);
-        Iterator<ImageReader> readers = ImageIO.getImageReadersByFormatName("dicom");
-        System.out.println("HasNext: " + readers.hasNext());
-        ImageReader imageReader = readers.next();
-        ImageInputStream iis = ImageIO.createImageInputStream(fin);
-        imageReader.setInput(iis, false);
-        int num = imageReader.getNumImages(true);
-        BufferedImage[] images = new BufferedImage[num];
-        for (int i = 0; i < num; ++i) {
-            images[i] = imageReader.read(i);
+        FileInputStream fileInputStream = null;
+        ImageInputStream imageInputStream = null;
+        try {
+            // Prepare streams
+            fileInputStream = new FileInputStream(filename);
+            imageInputStream = ImageIO.createImageInputStream(fileInputStream);
+
+            // Get reader
+            Iterator<ImageReader> readers = ImageIO.getImageReadersByFormatName("dicom");
+            ImageReader imageReader = readers.next();
+
+            // Read Images
+            imageReader.setInput(imageInputStream, false);
+            int imageCount = imageReader.getNumImages(true);
+            BufferedImage[] images = new BufferedImage[imageCount];
+            for (int i = 0; i < imageCount; ++i) {
+                images[i] = imageReader.read(i);
+            }
+            return images;
+
+        } finally {
+            close(fileInputStream);
+            close(imageInputStream);
         }
-        fin.close();
-        return images;
+    }
+
+    private static void close(Closeable closeable) {
+        if (closeable == null) return;
+        try {
+            closeable.close();
+        } catch (IOException e) {
+            // TODO: log the exception
+        }
     }
 
 }
