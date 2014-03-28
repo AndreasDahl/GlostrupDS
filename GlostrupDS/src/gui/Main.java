@@ -1,6 +1,7 @@
 package gui;
 
 import util.DSCalculator;
+import util.DSResults;
 import util.DicomLoader;
 
 import javax.swing.*;
@@ -23,6 +24,9 @@ public class Main {
     private GuiImage guiImage1;
     private JButton nextButton;
     private JButton previousButton;
+    private JLabel text1Label;
+    private JLabel text2Label;
+    private JLabel text3Label;
     private BufferedImage[] images;
     private int i = 0;
 
@@ -30,9 +34,9 @@ public class Main {
         try {
             images = DicomLoader.loadDicom(DEFAULT_IMG_PATH);
             images = Arrays.copyOfRange(images, 3, images.length);
-            DSCalculator calculator = new DSCalculator(images);
-            i = calculator.getZ();
-            guiImage1 = new GuiImage(calculator.getChosenImage());
+            DSResults dsResults = DSCalculator.calculate(images);
+            i = dsResults.getZ();
+            guiImage1 = new GuiImage(dsResults.getChosenImage());
         } catch (IOException e) {
             e.printStackTrace();
         }
