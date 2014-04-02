@@ -20,20 +20,19 @@ public class DSCalculator {
         byte intensity = 0;
 
         for (int i = 0; i < images.length; i++) {
-            byte[] pixels = ((DataBufferByte)images[z].getRaster().getDataBuffer()).getData();
-            int width = images[z].getWidth();
+            byte[] pixels = ((DataBufferByte)images[i].getRaster().getDataBuffer()).getData();
+            int width = images[i].getWidth();
 
             // TODO: Handle several instance of same brightest brightness
-            for (int pIndex = 0; i < pixels.length; i++) {
+            for (int pIndex = 0; pIndex < pixels.length; pIndex++) {
                 if (pixels[pIndex] > intensity) {
                     x = pIndex % width;
                     y = pIndex / width;
                     z = i;
-                    intensity = pixels[i];
+                    intensity = pixels[pIndex];
                     chosenImage = images[z];
                 }
             }
-            z++;
         }
         System.out.println("X: " + x + " Y: " + y + " Z: " + z + " Intensity: " + intensity);
 

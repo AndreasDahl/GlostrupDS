@@ -17,14 +17,16 @@ public class GuiImage extends JPanel {
 
     public void setImage(Image image) {
         this.image = image;
+        this.repaint();
     }
 
     @Override
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D)g;
 
-        Image img = image.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
-        g.drawImage(img, 0, 0, this);
+        g2.setRenderingHint(RenderingHints.KEY_RENDERING,
+                RenderingHints.VALUE_RENDER_QUALITY);
+        g2.drawImage(image, 0, 0, getWidth(), getHeight(), this);
     }
 
 }
