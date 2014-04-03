@@ -1,6 +1,5 @@
 package util;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 
@@ -13,11 +12,11 @@ public class DSCalculator {
     public static DSResults calculate(BufferedImage[] images) {
         // Find brightest pixel
 
-        Image chosenImage = images[0];
+        BufferedImage chosenImage = images[0];
         int x = 0;
         int y = 0;
         int z = 0;
-        byte intensity = 0;
+        int intensity = 0;
 
         for (int i = 0; i < images.length; i++) {
             byte[] pixels = ((DataBufferByte)images[i].getRaster().getDataBuffer()).getData();
@@ -25,11 +24,14 @@ public class DSCalculator {
 
             // TODO: Handle several instance of same brightest brightness
             for (int pIndex = 0; pIndex < pixels.length; pIndex++) {
-                if (pixels[pIndex] > intensity) {
+                int value = pixels[pIndex];
+                if (value < 0) value += 256;
+
+                if (value > intensity) {
                     x = pIndex % width;
                     y = pIndex / width;
                     z = i;
-                    intensity = pixels[pIndex];
+                    intensity = value;
                     chosenImage = images[z];
                 }
             }

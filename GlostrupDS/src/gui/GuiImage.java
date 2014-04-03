@@ -2,20 +2,25 @@ package gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /**
  * @author Andreas
  * @since 24-03-14
  */
 public class GuiImage extends JPanel {
-    private Image image;
+    private BufferedImage image;
 
-    public GuiImage(Image img) {
+    public GuiImage() {
+        super();
+    }
+
+    public GuiImage(BufferedImage img) {
         super();
         this.image = img;
     }
 
-    public void setImage(Image image) {
+    public void setImage(BufferedImage image) {
         this.image = image;
         this.repaint();
     }

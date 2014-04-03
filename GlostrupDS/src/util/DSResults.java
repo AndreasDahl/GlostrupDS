@@ -1,17 +1,17 @@
 package util;
 
-import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /**
  * @author Andreas
  * @since 28-03-14
  */
 public final class DSResults {
-    private final Image chosenImage;
+    private final BufferedImage chosenImage;
     private final int x, y, z;
-    private final byte intensity;
+    private final int intensity;
 
-    public DSResults(Image chosenImage, int x, int y, int z, byte intensity) {
+    public DSResults(BufferedImage chosenImage, int x, int y, int z, int intensity) {
         this.chosenImage = chosenImage;
         this.x = x;
         this.y = y;
@@ -19,7 +19,7 @@ public final class DSResults {
         this.intensity = intensity;
     }
 
-    public Image getChosenImage() {
+    public BufferedImage getChosenImage() {
         return chosenImage;
     }
 
@@ -35,7 +35,7 @@ public final class DSResults {
         return z;
     }
 
-    public byte getIntensity() {
+    public int getIntensity() {
         return intensity;
     }
 }
